@@ -4,21 +4,21 @@ def main(transports):
     counter = 0
     list_ts = []
 
-    def get_ts(vehicle):
+    def get_ts(vehicle): #функция получения т/с
         return vehicle['ts']
 
     
-    transports.sort(key=get_ts)
-    transports.reverse()
+    transports.sort(key=get_ts) #сортировка транспорта в порядке возврастания 
+    transports.reverse() реверс сортированного списка в порядке возврастания
 
-    for transport in transports:
+    for transport in transports: # логика нахождения оптимального количества т/с
         if gruz >= transport['ts']:
             while gruz > 0 and transport['ts'] <= gruz:
                 gruz -= transport['ts']  
                 transport['count'] += 1  
                 counter += 1  
                 
-    if gruz > 0:  
+    if gruz > 0:   # логика ,если груз меньше ,чем  грузоподьемность любой из т/с
         is_have = None
         for transport in transports: 
             if transport['ts'] > gruz:
