@@ -1,6 +1,6 @@
 #Логика нахождения минимально возможного количества грузовиков т/к
-def main(transports):
-    gruz = 42
+def main(transports,gru):
+    gruz = gru
     counter = 0
     list_ts = []
 
@@ -9,7 +9,7 @@ def main(transports):
 
     
     transports.sort(key=get_ts) #сортировка транспорта в порядке возврастания 
-    transports.reverse() реверс сортированного списка в порядке возврастания
+    transports.reverse()  #реверс сортированного списка в порядке возврастания
 
     for transport in transports: # логика нахождения оптимального количества т/с
         if gruz >= transport['ts']:
@@ -43,8 +43,9 @@ t4 = {'ts': 10, 'count': 0 ,' type ' :'airplane'}
 t5 = {'ts': 8, 'count': 0 ,' type' : 'van '}
 tra = [t1, t2, t3, t4, t5]
 
-main(tra)
+main(tra,42)
 """
+
 
 
 # чото другое
