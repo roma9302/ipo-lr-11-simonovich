@@ -1,3 +1,5 @@
+import random as r
+
 #Логика нахождения минимально возможного количества грузовиков т/к
 def main(transports,gru):
     gruz = gru
@@ -48,4 +50,33 @@ main(tra,42)
 
 
 
-# чото другое
+# валидация(проверка имен/строк на корректность)
+def validate_str(user_input):
+    if user_input.isalpha():
+        print(f"Ввод {user_input} валиден: только буквы.")
+    else:
+        print(f"Ошибка: ввод {user_input} должен содержать только буквы.")
+
+#Валидация(проверка на содержание одних лишь цифр)
+def validate_number(user_input):
+    try:
+        float_value = float(user_input) 
+        print(f"Ввод {user_input} валиден: это число")
+    except ValueError:
+        print(f"Ошибка: ввод {user_input} должен содержать число")
+
+
+#Генерация случайной строки (уникальный идентификатор (строка, генерируется случайно при создание))
+def generate():
+    random_number = str(r.randint(1000, 99999999)) 
+
+    with open('transport/list_id.txt', 'r', encoding='utf-8') as file:
+        repeat = file.read().splitlines()  
+
+    while random_number in repeat:
+        random_number = str(r.randint(1000, 99999999))
+
+    with open('transport/list_id.txt', 'a', encoding='utf-8') as file:
+        file.write(random_number + '\n')
+    return random_number
+
