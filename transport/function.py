@@ -53,7 +53,7 @@ main(tra,42)
 # валидация(проверка имен/строк на корректность)
 def validate_str(user_input):
     if user_input.isalpha():
-        print(f"Ввод {user_input} валиден: только буквы.")
+        return user_input
     else:
         print(f"Ошибка: ввод {user_input} должен содержать только буквы.")
 
@@ -61,7 +61,7 @@ def validate_str(user_input):
 def validate_number(user_input):
     try:
         float_value = float(user_input) 
-        print(f"Ввод {user_input} валиден: это число")
+        return user_input
     except ValueError:
         print(f"Ошибка: ввод {user_input} должен содержать число")
 
