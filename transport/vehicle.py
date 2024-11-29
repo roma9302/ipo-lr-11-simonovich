@@ -19,27 +19,3 @@ class Vehicle:
         return f"ID ТС: {self.vehicle_id}, Грузоподъемность: {self.capacity} т, Текущая загрузка: {self.current_load} т"
 
 
-if __name__ == "__main__":
-    client1 = Client("Alice", 5)
-    client2 = Client("Bob", 1, is_vip=True)
-
-    vehicle = Vehicle(capacity=10)
-
-    print(vehicle.current_load)  
-
-    try:
-        vehicle.load_cargo(client1)  
-    except ValueError as e:
-        print(e)
-
-    try:
-        vehicle.load_cargo(client2)  
-    except ValueError as e:
-        print(e)
-
-    print(vehicle)
-
-
-    print("Список клиентов в транспортном средстве:")
-    for client in vehicle.clients_list: 
-        print(f"Клиент: {client.name}, Груз: {client.cargo_weight} т, VIP: {client.is_vip}")
