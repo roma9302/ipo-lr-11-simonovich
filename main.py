@@ -11,13 +11,14 @@ company = TransportCompany("Транспортная компания")
 
 def hangar():
     hangar_close = True #Флажок для выхода из доп. меню
-    with open("transport/database.json", 'r', encoding='utf-8') as file:
-        vehicles_data = json.load(file)
     while hangar_close: 
         
+        with open("transport/database.json", 'r', encoding='utf-8') as file:
+            hangar_count = json.load(file)
         counter =0 # подсчет количества т/с в т/к (1 ангар - 1 т/с)
+        
         print(f"""
-            Количество Ангаров {vehicles_data['fields']['hangars']}
+            Количество Ангаров {hangar_count['fields']['hangars']}
             1) Добавить 1 ангар 
             2) Удалить 1 ангар
             3) Удалить т/с 
