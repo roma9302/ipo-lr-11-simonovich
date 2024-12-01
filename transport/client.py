@@ -9,7 +9,7 @@ class Client:
         self.client_id = generate()
 
 
-
+        #словарь для записи в файл обьекта класса
         client_data = {
             "client": {  
                 "name": self.name,
@@ -22,9 +22,12 @@ class Client:
         try:
             with open("transport/clients.json", 'r', encoding='utf-8') as file:
                 data = json.load(file)
+                
+                #Если структуры нет в файле , создаем ее
                 if "clients" not in data:
                     data = {"clients": []}
                     
+        #Если в файле неправильная структура, обновляем ее           
         except Exception:
             data = {"clients": []}
 
