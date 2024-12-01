@@ -4,8 +4,8 @@ import json
 
 
 
-
-
+"""string -> accepts
+    else: return None"""
 # валидация(проверка имен/строк на корректность)
 def validate_str(user_input):
     if user_input.isalpha():
@@ -14,6 +14,11 @@ def validate_str(user_input):
         print(f"Ошибка: ввод '{user_input}'должен содержать только буквы.")
         return None
 
+
+"""int  -> accepts 
+   float -> accepts
+   signed(-) -> return None
+   else: return None """
 #Валидация(проверка на содержание одних лишь цифр)
 def validate_number(user_input):
     try:
@@ -26,7 +31,7 @@ def validate_number(user_input):
         print(f"Ошибка: ввод '{user_input}' должен содержать число")
         return None
 
-
+"""return int -> 1000, 99999999"""
 #Генерация случайной строки (уникальный идентификатор (строка, генерируется случайно при создание))
 def generate():
     random_number = str(r.randint(1000, 99999999)) 
@@ -42,7 +47,7 @@ def generate():
     return random_number
 
 
-
+#Сортировка грузов клиентов (Внутрення функция для optimize)
 def sort_cargo(clients):
     for i in range(len(clients)):
         for j in range(0, len(clients)-i-1):
@@ -52,8 +57,19 @@ def sort_cargo(clients):
 
 
 
-
-
+"""{
+  "clients": [  
+    {
+      "client": {
+        "name": "пр",
+        "cargo_weight": 3.0,
+        "is_vip": true,
+        "client_id": "72840119"
+      }
+    }
+  ]
+} """
+#Функция вывода клиентов 
 def output_client():
     with open("transport/clients.json", 'r', encoding='utf-8') as file:
         try:
@@ -67,8 +83,21 @@ def output_client():
                         """)
         except:
             print("Возникла ошибка. Проверьте наличие транспорта ")
-            
 
+""" 
+{
+  "clients": [
+    {
+      "client": {
+        "name": "пр",
+        "cargo_weight": 3.0,
+        "is_vip": true,
+        "client_id": "72840119"
+      }
+    }
+  ]
+}"""
+#Функция добавления клиентов
 def add_completed_client(client_data,vehicle):
     try:
         with open("transport/completed_cargo.json", 'r', encoding='utf-8') as file:
@@ -83,15 +112,28 @@ def add_completed_client(client_data,vehicle):
         "vehicle": vehicle
     }
 
-
     data["clients"].append(client_completed_cargo)
-
 
     with open('transport/completed_cargo.json', 'w', encoding='utf-8') as file:
         json.dump(data, file, ensure_ascii=False, indent=2)
 
 
-
+"""
+(completed_cargo)
+{
+    "clients": [
+        {
+            "client": {
+                "name": "пр",
+                "cargo_weight": 3.0,
+                "is_vip": true,
+                "client_id": "72840119"
+            },
+            "vehicle": "99247643"  -> ( vehicle_id)
+        }
+    ]
+}"""
+#Вывод загруженых клиентов из файла 
 def output_completed_client():
     try:
         with open("transport/completed_cargo.json", 'r', encoding='utf-8') as file:
@@ -109,7 +151,7 @@ def output_completed_client():
 
 
 
-
+#Пример заполнения полей
 def example():
     print("""
     Добавление нового т/с:
@@ -126,7 +168,7 @@ def example():
         """)
     
 
-    
+#Меню программы
 def menu():
     print("""
         1)Управление ангаром
@@ -143,8 +185,15 @@ def menu():
     
 
 
-
-
+"""
+after(completed_cargo) :
+{
+    "clients": []
+}
+after (database.json)
+ for everyone "current_load": 0
+"""
+#Выгрузка грузов в интервале 5 секунд.
 def unloading_caro():
     try:
         print("Все грузы отправлены на разгрузку. Для выполнения следующего действия подождите 5 секунд ")
@@ -188,6 +237,23 @@ def unloading_caro():
 
 
 
+
+"""
+        1)Управление ангаром
+        2)Добавить клиента
+        3)Добавить Т/С
+        4)Вывести список  доступных клиентов
+        5)Список клиентов, чьи грузы загружены
+        6)Вывести список доступного транспорта
+        7)Автоматическое распределение грузов
+        8)Ручное управление грузами
+        9)Выгрузка грузов
+        10)Пример заполнения форм
+        11) Выход
+Выберите вариант взаимодействия 7
+Клиент: пр загружен в транспортное средство ID: 99247643 с весом груза: 3.0
+"""
+#Функция оптимального распределения грузов
 def optimize():
     try:
         with open('transport/clients.json', 'r', encoding='utf-8') as file:
