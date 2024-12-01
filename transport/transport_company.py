@@ -15,7 +15,7 @@ class TransportCompany:
     def add_client(self, client):
         self.clients.append(client)
 
-
+#Метод для вывода обьектов класса посредством чтения их из файла
     def list_vehicles(self):
         try:
             with open("transport/database.json", 'r', encoding='utf-8') as file:
@@ -26,6 +26,7 @@ class TransportCompany:
             except:
                 print("Возникла ошибка при выводе т/с . Их нет")
 
+            #Перебор всех атрибутов обьектов в файле (get дабы избежать ошибок если значения не будет. Т.е для разделения на подклассы)
             print("Доступные Транспортные средства:")
             for vehicle_data in vehicles:
                 vehicle_id = vehicle_data['vehicle_id']
@@ -35,6 +36,7 @@ class TransportCompany:
                 is_refrigerated = vehicle_data.get('is_refrigerated') 
                 max_altitude = vehicle_data.get('max_altitude')
 
+                #Вывод фургонов
                 if vehicle_type == 'van':
                     print(f"""
                             Тип: {vehicle_type}
@@ -43,6 +45,8 @@ class TransportCompany:
                             Текущая загруженность: {current_load}
                             Наличие холодильника: {is_refrigerated}
                             """)
+
+                #Вывод аиропланов
                 elif vehicle_type == 'airplane':
                     print(f"""
                             Тип: {vehicle_type}
@@ -51,9 +55,13 @@ class TransportCompany:
                             Текущая загруженность: {current_load}
                             Максимальная высота подьема {max_altitude}
                             """)
+                    
         except:
             print("Ошибка при выводе транспорта. Проверьте его наличие")
 
+
+    #Метод для оптимизации загрузки данных(не вручную)
+    #Вызывает функцию из файла function.py
     def optimize_cargo_distribution(self):
         optimize()
 
