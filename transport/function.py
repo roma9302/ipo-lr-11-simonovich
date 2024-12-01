@@ -237,7 +237,6 @@ def optimize():
         with open('transport/database.json', 'w', encoding='utf-8') as output:
             json.dump(vehicles_data, output, ensure_ascii=False, indent=4)
 
-        # Сохраняем обновленные загруженные клиенты
         with open('transport/completed_cargo.json', 'w', encoding='utf-8') as output:
             json.dump(completed_cargo, output, ensure_ascii=False, indent=4)
 
