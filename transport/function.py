@@ -8,7 +8,7 @@ import json
     else: return None"""
 # валидация(проверка имен/строк на корректность)
 def validate_str(user_input):
-    if user_input.isalpha():
+    if user_input.isalpha(): #Проверка (состоит ли аргумент из букв. Если есть хоть 1 эленмент не удовлетворяющий условию -> return None)
         return user_input
     else:
         print(f"Ошибка: ввод '{user_input}'должен содержать только буквы.")
@@ -22,27 +22,27 @@ def validate_str(user_input):
 #Валидация(проверка на содержание одних лишь цифр)
 def validate_number(user_input):
     try:
-        float_value = float(user_input)
-        if float_value < 0:
+        float_value = float(user_input) #Если аргумент можно представить в виде float значения идем дальше.
+        if float_value < 0:  #Если наше float значение меньше  0 -> return None .
             print(f"Ошибка: ввод '{user_input}' должен быть неотрицательным числом/нулевым ")
-            return None
-        return float_value  
+            return None   
+        return float_value  # Нет -> return value
     except ValueError:
         print(f"Ошибка: ввод '{user_input}' должен содержать число")
-        return None
+        return None # Нет -> return None
 
 """return int -> 1000, 99999999"""
-#Генерация случайной строки (уникальный идентификатор (строка, генерируется случайно при создание))
+#Генерация случайной строки (уникальный идентификатор  для клиента и т/с (строка, генерируется случайно при создание))
 def generate():
     random_number = str(r.randint(1000, 99999999)) 
 
-    with open('transport/list_id.txt', 'r', encoding='utf-8') as file:
+    with open('transport/list_id.txt', 'r', encoding='utf-8') as file:   #Извлекает из файла построчно все уникальные идентификаторы splitlines()
         repeat = file.read().splitlines()  
 
-    while random_number in repeat:
+    while random_number in repeat:  #Продолжает генерировать новый айди пока он не станет уникальным 
         random_number = str(r.randint(1000, 99999999))
 
-    with open('transport/list_id.txt', 'a', encoding='utf-8') as file:
+    with open('transport/list_id.txt', 'a', encoding='utf-8') as file:  #Запись нового айди в файл
         file.write(random_number + '\n')
     return random_number
 
@@ -103,10 +103,13 @@ def add_completed_client(client_data,vehicle):
         with open("transport/completed_cargo.json", 'r', encoding='utf-8') as file:
             data = json.load(file)
             if "clients" not in data:
-                data = {"clients": []}
+                data = {"clients": []}  #Если файл пустой. Создание начальной структуры
                 
+#Если в файле неправильная структура . Создание начальной структуры
     except Exception:
-        data = {"clients": []}              
+        data = {"clients": []}     
+
+#Создание структуры готового файла
     client_completed_cargo = {
         "client": client_data,
         "vehicle": vehicle
@@ -197,7 +200,7 @@ after (database.json)
 def unloading_caro():
     try:
         print("Все грузы отправлены на разгрузку. Для выполнения следующего действия подождите 5 секунд ")
-        seconds = 5
+        seconds = 5 
         while seconds > 0:
             if seconds == 5:
                 print("5 секунд осталось")
@@ -210,7 +213,7 @@ def unloading_caro():
             elif seconds == 1:
                 print("1 секунда осталась")
             
-            time.sleep(1) 
+            time.sleep(1) #5 раз происходит задержка программы по 1 секунде 
             seconds -= 1
 
         print("Все грузы были успешно отгружены!")
@@ -220,15 +223,15 @@ def unloading_caro():
             vehicles = vehicles_data["fields"]["vehicles"]
             
             for vehicle_data in vehicles:
-                if vehicle_data['current_load'] > 0:
+                if vehicle_data['current_load'] > 0:  #Если загруженность машины больше 0, ей присваивается 0
                     vehicle_data['current_load'] = 0
 
-                    with open("transport/database.json", 'w', encoding='utf-8') as outfile:
+                    with open("transport/database.json", 'w', encoding='utf-8') as outfile:  #Перезапись в файл всех current_load
                         json.dump(vehicles_data, outfile, ensure_ascii=False, indent=4)
 
         with open("transport/completed_cargo.json", 'r', encoding='utf-8') as file:
-                clients_completed = json.load(file)
-                clients_completed['clients'] = [] 
+                clients_completed = json.load(file) #Очищает файл с загруженными клиентами 
+                clients_completed['clients'] = [] #Создает пустую структуру []
 
                 with open("transport/completed_cargo.json", 'w', encoding='utf-8') as outfile:
                     json.dump(clients_completed, outfile, ensure_ascii=False, indent=4)
@@ -270,27 +273,29 @@ def optimize():
 
         vehicles = vehicles_data['fields']['vehicles']
 
-        vip_clients = []
-        clients_non_vip = []
+        vip_clients = [] #лист для вип клиентов 
+        clients_non_vip = [] #Лист для обычных клиентов
 
-        for client in clients_data['clients']:
+ #Перебор клиентов всех групп и добавление по флагу вип в листы 
+        for client in clients_data['clients']: 
             cargo_weight = int(client['client']['cargo_weight'])
             if client['client']['is_vip']:
                 vip_clients.append((client, cargo_weight))
             else:
                 clients_non_vip.append((client, cargo_weight))
 
-
+#Сортировка значений по порядку возврастания
         sort_cargo(vip_clients)
         sort_cargo(clients_non_vip)
 
-        sorted_clients = vip_clients + clients_non_vip
+        sorted_clients = vip_clients + clients_non_vip  #Создание общего списка(vip - first; min - first)
 
+#Обновление загруженности т/с , удаление клиента из списка доступных , добавление клиента в файл загруженных пользователей 
         for client, cargo_weight in sorted_clients:
             for vehicle in vehicles:
                 if float(cargo_weight) <= float(vehicle['capacity']) - vehicle['current_load']:
                     vehicle['current_load'] += float(cargo_weight)
-                    completed_cargo["clients"].append({
+                    completed_cargo["clients"].append({ 
                         "client": client['client'],
                         "vehicle": vehicle['vehicle_id']
                     })
@@ -307,6 +312,6 @@ def optimize():
             json.dump(completed_cargo, output, ensure_ascii=False, indent=4)
 
         for item in completed_cargo["clients"]:
-            print(f"Клиент: {item['client']['name']} загружен в транспортное средство ID: {item['vehicle']} с весом груза: {item['client']['cargo_weight']}")
+            print(f"Клиент: {item['client']['name']} загружен в т/с айди: {item['vehicle']}  груз: {item['client']['cargo_weight']}")
     except:
         print("Ошибка при автоматическом распределениии . Проверьте наличие клиентов и свободных т/с")
