@@ -9,7 +9,6 @@ close = True
 company = TransportCompany("Транспортная компания")
 
 
-
 def hangar():
     hangar_close = True
     while hangar_close:
@@ -110,8 +109,7 @@ def leave():
 
 
 
-
-
+#Остальные функции в #Функции в файле function.py
 def console_programm():
     while close:
         try:
