@@ -71,6 +71,7 @@ def sort_cargo(clients):
 } """
 #Функция вывода клиентов 
 def output_client():
+    Found = False
     with open("transport/clients.json", 'r', encoding='utf-8') as file:
         try:
             clients = json.load(file)
@@ -81,6 +82,12 @@ def output_client():
                         Вип клиент {client['client']['is_vip']} 
                         Номер клиента в базе данных {client['client']['client_id']}
                         """)
+                Found = True
+                
+            if Found == False:
+                print("Возникла ошибка при ввводе доступных клиентов.Проверьте их наличие")
+            
+            
         except:
             print("Возникла ошибка. Проверьте наличие клиентов ")
 
@@ -138,6 +145,7 @@ def add_completed_client(client_data,vehicle):
 }"""
 #Вывод загруженых клиентов из файла 
 def output_completed_client():
+    Found = False
     try:
         with open("transport/completed_cargo.json", 'r', encoding='utf-8') as file:
             clients_completed = json.load(file)
@@ -149,6 +157,9 @@ def output_completed_client():
                         Номер клиента в базе данных {client['client']['client_id']}
                         Т/С в которую загружен груз клиента {client['vehicle']}
                         """)
+                Found = True
+            if Found == False:
+                print("Возникла ошибка при выводе загруженных клиентов.Проверьте их наличие.")
     except:
         print("Загруженых клиентов нет")
 
@@ -258,6 +269,7 @@ def unloading_caro():
 """
 #Функция оптимального распределения грузов
 def optimize():
+    Found = False
     try:
         with open('transport/clients.json', 'r', encoding='utf-8') as file:
             clients_data = json.load(file)
@@ -313,5 +325,8 @@ def optimize():
 
         for item in completed_cargo["clients"]:
             print(f"Клиент: {item['client']['name']} загружен в т/с айди: {item['vehicle']}  груз: {item['client']['cargo_weight']}")
+            Found = True
+        if Found == False:
+            print("Ошибка при оптимизированнной загрузке авто.Проверьте наличие т/с и грузов ")
     except:
         print("Ошибка при автоматическом распределениии . Проверьте наличие клиентов и свободных т/с")
