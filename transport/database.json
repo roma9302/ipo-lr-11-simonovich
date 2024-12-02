@@ -1,7 +1,7 @@
 {
     "company": "transport_company",
     "fields": {
-        "hangars": 9,
+        "hangars": 4,
         "vehicles": [
             {
                 "type": "van",
