@@ -17,6 +17,7 @@ class TransportCompany:
 
 #Метод для вывода обьектов класса посредством чтения их из файла
     def list_vehicles(self):
+        Found = False
         try:
             with open("transport/database.json", 'r', encoding='utf-8') as file:
                 vehicles_data = json.load(file)
@@ -35,6 +36,8 @@ class TransportCompany:
                 current_load = vehicle_data['current_load']
                 is_refrigerated = vehicle_data.get('is_refrigerated') 
                 max_altitude = vehicle_data.get('max_altitude')
+                Found = True
+        
 
                 #Вывод фургонов
                 if vehicle_type == 'van':
@@ -55,6 +58,8 @@ class TransportCompany:
                             Текущая загруженность: {current_load}
                             Максимальная высота подьема {max_altitude}
                             """)
+            if Found == False:
+                print("Нет доступных т/с")
                     
         except:
             print("Ошибка при выводе транспорта. Проверьте его наличие")
